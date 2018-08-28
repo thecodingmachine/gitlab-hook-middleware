@@ -1,0 +1,6 @@
+{
+  "Interop\\Container\\ServiceProviderInterface": [
+    "Mouf\\Html\\Utils\\WebLibraryManager\\WebLibraryManagerServiceProvider",
+    "Mouf\\Html\\Utils\\WebLibraryManager\\WebLibraryManagerRendererServiceProvider"
+  ]
+}
