@@ -3,7 +3,6 @@
 
 namespace TheCodingMachine\GitlabHook;
 
-
 use Psr\Http\Message\RequestInterface;
 
 class HookReceiver
@@ -14,6 +13,5 @@ class HookReceiver
 
     public function handle(RequestInterface $request): void
     {
-
     }
 }
