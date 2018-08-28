@@ -12,7 +12,7 @@ class HookReceiver
     {
     }
 
-    public function handle(RequestInterface $request)
+    public function handle(RequestInterface $request): void
     {
 
     }
