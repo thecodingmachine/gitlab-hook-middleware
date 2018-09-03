@@ -12,6 +12,6 @@
     "Reflection",
     "SPL",
     "standard",
-    "posix"
+    "json"
   ]
 }
