@@ -2,6 +2,7 @@
 namespace TheCodingMachine\GitlabHook\Model\Event;
 
 use TheCodingMachine\GitlabHook\EventInterface;
+use TheCodingMachine\GitlabHook\GitlabHookException;
 use TheCodingMachine\GitlabHook\Model\AbstractObject;
 
 abstract class AbstractTeamMember extends AbstractObject implements EventInterface
@@ -25,9 +26,15 @@ abstract class AbstractTeamMember extends AbstractObject implements EventInterfa
     /**
      * @return string
      */
-    public function getProtectAccess(): string
+    public function getProjectAccess(): string
     {
-        return $this->getAttribute('project_access');
+        if(isset($this->payload['project_access'])) {
+            return $this->getAttribute('project_access');
+        }
+        elseif(isset($this->payload['access_level'])) {
+            return $this->getAttribute('access_level');
+        }
+        throw new GitlabHookException("Variable project_access && access_level doesn't exist in ".get_class($this)." model");
     }
 
     /**

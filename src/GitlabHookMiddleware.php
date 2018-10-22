@@ -34,13 +34,13 @@ class GitlabHookMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($request->hasHeader('HTTP_X_GITLAB_TOKEN')) {
-            if ($request->getHeader('HTTP_X_GITLAB_TOKEN')[0] == $this->gitlabSecret) {
+        if ($request->hasHeader('x-gitlab-token')) {
+            if ($request->getHeader('x-gitlab-token')[0] == $this->gitlabSecret) {
                 $payload = json_decode($request->getBody()->getContents(), true);
                 if (($error = json_last_error()) != JSON_ERROR_NONE) {
                     throw new GitlabHookException("Error parsing json data with code: ".$error);
                 }
-                $this->hookReceiver->handle($payload, $request->getHeader('X-Gitlab-Event')[0]);
+                $this->hookReceiver->handle($payload, $request->getHeader('x-gitlab-event')[0]);
                 return new Response();
             }
             return new Response('Wrong key', 401);
