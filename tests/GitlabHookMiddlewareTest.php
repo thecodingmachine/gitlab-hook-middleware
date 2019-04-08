@@ -19,6 +19,7 @@ use TheCodingMachine\GitlabHook\Model\Event\MergeRequest;
 use TheCodingMachine\GitlabHook\Model\Event\TagPush;
 use TheCodingMachine\GitlabHook\Model\Event\WikiPage;
 use Zend\Diactoros\Response;
+use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\ServerRequest;
 
 class GitlabHookMiddlewareTest extends TestCase {
@@ -27,7 +28,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         $data = fopen(__DIR__.'/fixtures/push.json', 'r');
 
         $request = new ServerRequest([], [], '/foo', 'GET', $data,
-                        ['HTTP_X_GITLAB_TOKEN' => 'test', 'X-Gitlab-Event' => 'Push Hook']);
+                        ['X-GITLAB-TOKEN' => 'test', 'X-Gitlab-Event' => 'Push Hook']);
         $handler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -47,7 +48,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         $data = fopen(__DIR__.'/fixtures/pushError.json', 'r');
 
         $request = new ServerRequest([], [], '/foo', 'GET', $data,
-            ['HTTP_X_GITLAB_TOKEN' => 'test', 'X-Gitlab-Event' => 'Push Hook']);
+            ['X-GITLAB-TOKEN' => 'test', 'X-Gitlab-Event' => 'Push Hook']);
         $handler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
@@ -64,7 +65,7 @@ class GitlabHookMiddlewareTest extends TestCase {
 
     public function testUnauthorized() {
         $request = new ServerRequest([], [], '/foo', 'GET', 'php://input',
-            ['HTTP_X_GITLAB_TOKEN' => 'wrongKey', 'X-Gitlab-Event' => 'Push Hook']);
+            ['X-GITLAB-TOKEN' => 'wrongKey', 'X-Gitlab-Event' => 'Push Hook']);
         $handler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
