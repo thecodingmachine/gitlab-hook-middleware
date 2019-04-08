@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\NullLogger;
 use TheCodingMachine\GitlabHook\Model\Base\Branch;
 use TheCodingMachine\GitlabHook\Model\Base\Change;
 use TheCodingMachine\GitlabHook\Model\Base\Commit;
@@ -37,7 +38,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         };
 
         $hookReceiver = new HookReceiver([]);
-        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test');
+        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test', new NullLogger());
         $response = $gitlabHookReceiver->process($request, $handler);
 
         $this->assertInstanceOf(Response::class, $response);
@@ -57,7 +58,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         };
 
         $hookReceiver = new HookReceiver([]);
-        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test');
+        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test', new NullLogger());
 
         $this->expectException(GitlabHookException::class);
         $response = $gitlabHookReceiver->process($request, $handler);
@@ -74,7 +75,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         };
 
         $hookReceiver = new HookReceiver([]);
-        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test');
+        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test', new NullLogger());
         $response = $gitlabHookReceiver->process($request, $handler);
 
         $this->assertInstanceOf(Response::class, $response);
@@ -91,7 +92,7 @@ class GitlabHookMiddlewareTest extends TestCase {
         };
 
         $hookReceiver = new HookReceiver([]);
-        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test');
+        $gitlabHookReceiver = new GitlabHookMiddleware($hookReceiver, 'test', new NullLogger());
         $response = $gitlabHookReceiver->process($request, $handler);
 
         $this->assertInstanceOf(Response::class, $response);
