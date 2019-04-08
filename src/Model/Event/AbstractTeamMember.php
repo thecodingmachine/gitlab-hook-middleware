@@ -28,10 +28,9 @@ abstract class AbstractTeamMember extends AbstractObject implements EventInterfa
      */
     public function getProjectAccess(): string
     {
-        if(isset($this->payload['project_access'])) {
+        if (isset($this->payload['project_access'])) {
             return $this->getAttribute('project_access');
-        }
-        elseif(isset($this->payload['access_level'])) {
+        } elseif (isset($this->payload['access_level'])) {
             return $this->getAttribute('access_level');
         }
         throw new GitlabHookException("Variable project_access && access_level doesn't exist in ".get_class($this)." model");

@@ -26,7 +26,7 @@ class TeamMemberAddTest extends TestCase {
         $this->assertInstanceOf(\DateTimeImmutable::class, $updatedAt);
         $this->assertSame('2012-07-21 07:38:22', $updatedAt->format('Y-m-d H:i:s'));
 
-        $this->assertSame('Maintainer', $event->getProtectAccess());
+        $this->assertSame('Maintainer', $event->getProjectAccess());
         $this->assertSame(74, $event->getProjectId());
         $this->assertSame('StoreCloud', $event->getProjectName());
         $this->assertSame('storecloud', $event->getProjectPath());
