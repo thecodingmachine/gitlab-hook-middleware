@@ -15,7 +15,7 @@ It's possible to use directly the hookReceiver to build the event object, but yo
 How does it work
 ----------------
 
-The middleware checks the header named HTTP_X_GITLAB_TOKEN and builds an event object. The object is dispatched to a listener 
+The middleware checks the header named X-GITLAB-TOKEN and builds an event object. The object is dispatched to a listener 
 that you must implement.
 
 The middleware takes care of unserializing the payload and provides you with nice PHP objects instead of raw JSON data.
@@ -112,10 +112,13 @@ $listener = new Test\Listerner();
 // Register your listener in the main HookReceiver instance
 $hookReceiver = new TheCodingMachine\GitlabHook\HookReceiver([$listener]);
 
+// Create a PSR-3 logger
+$logger = new Psr\Log\NullLogger(); 
+
 // Inject hookReceiver in Gitlab middleware
 // You must inject this middleware in the middleware pipe of your favorite framework.
 // See your framework documentation on how to do that.
-$middleware = new TheCodingMachine\GitlabHook\GitlabHookMiddleware($hookReceiver);
+$middleware = new TheCodingMachine\GitlabHook\GitlabHookMiddleware($hookReceiver, 'secret', $logger);
 ```
 
 

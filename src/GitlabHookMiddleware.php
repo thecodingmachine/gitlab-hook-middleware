@@ -5,6 +5,8 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
+use function var_export;
 use Zend\Diactoros\Response;
 
 class GitlabHookMiddleware implements MiddlewareInterface
@@ -20,10 +22,16 @@ class GitlabHookMiddleware implements MiddlewareInterface
      */
     private $gitlabSecret;
 
-    public function __construct(HookReceiver $hookReceiver, string $gitlabSecret)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(HookReceiver $hookReceiver, string $gitlabSecret, LoggerInterface $logger)
     {
         $this->hookReceiver = $hookReceiver;
         $this->gitlabSecret = $gitlabSecret;
+        $this->logger = $logger;
     }
 
     /**
@@ -40,6 +48,7 @@ class GitlabHookMiddleware implements MiddlewareInterface
                 if (($error = json_last_error()) != JSON_ERROR_NONE) {
                     throw new GitlabHookException("Error parsing json data with code: ".$error);
                 }
+                $this->logger->debug('[Gitlab hook middleware] Received payload: '.var_export($payload, true));
                 $this->hookReceiver->handle($payload, $request->getHeader('x-gitlab-event')[0]);
                 return new Response();
             }
