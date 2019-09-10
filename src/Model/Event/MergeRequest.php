@@ -78,7 +78,9 @@ class MergeRequest extends AbstractObject implements EventInterface
         $this->source = new Branch($this->getAttribute('source', 'object_attributes'));
         $this->target = new Branch($this->getAttribute('target', 'object_attributes'));
         $this->lastCommit = new Commit($this->getAttribute('last_commit', 'object_attributes'));
-        $this->assignee = new User($this->getAttribute('assignee', 'object_attributes'));
+        if ($this->hasAttribute('assignee', 'object_attributes')) {
+            $this->assignee = new User($this->getAttribute('assignee', 'object_attributes'));
+        }
     }
 
     /**
@@ -274,9 +276,9 @@ class MergeRequest extends AbstractObject implements EventInterface
     }
 
     /**
-     * @return User
+     * @return User|null
      */
-    public function getAssignee(): User
+    public function getAssignee(): ?User
     {
         return $this->assignee;
     }
