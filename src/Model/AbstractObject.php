@@ -2,6 +2,7 @@
 namespace TheCodingMachine\GitlabHook\Model;
 
 use TheCodingMachine\GitlabHook\GitlabHookException;
+use function array_key_exists;
 
 abstract class AbstractObject
 {
@@ -78,6 +79,16 @@ abstract class AbstractObject
         return $array;
     }
 
+    protected function hasAttribute(string $key, string $subArray = null): bool
+    {
+        if (null !== $subArray) {
+            $array = $this->getKey($subArray, $this->payload);
+        } else {
+            $array = $this->payload;
+        }
+        return array_key_exists($key, $array);
+    }
+
     /**
      * @param string $key
      * @param string|null $subArray
@@ -104,7 +115,7 @@ abstract class AbstractObject
     private function getKey(string $key, array $array)
     {
         if (!array_key_exists($key, $array)) {
-            throw new GitlabHookException("Variable ".$key." doesn't exist in ".get_class($this)." model");
+            throw new GitlabHookException("Variable '".$key."' doesn't exist in ".get_class($this)." model");
         }
         return $array[$key];
     }

@@ -24,12 +24,14 @@ class Change extends AbstractObject
     public function __construct(array $payload)
     {
         parent::__construct($payload);
-        $labels = $this->getAttribute('labels');
-        foreach ($labels['previous'] as $label) {
-            $this->labelsPrevious[] = new Label($label);
-        }
-        foreach ($labels['current'] as $label) {
-            $this->labelsCurrent[] = new Label($label);
+        if ($this->hasAttribute('labels')) {
+            $labels = $this->getAttribute('labels');
+            foreach ($labels['previous'] as $label) {
+                $this->labelsPrevious[] = new Label($label);
+            }
+            foreach ($labels['current'] as $label) {
+                $this->labelsCurrent[] = new Label($label);
+            }
         }
     }
 
